@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="max-w-5xl mx-auto">
-          <header className="p-6 border-b flex justify-between bg-red-600 text-white rounded-md">
+          <header className="p-6 border-b flex items-center justify-between bg-red-600 text-white rounded-md">
             <Link className="text-2xl font-bold" href="/">
               Simple CRUD CMS
             </Link>
@@ -27,7 +27,7 @@ export default function RootLayout({
               Add Post
             </Link>
           </header>
-          <main>{children}</main>
+          <main className="p-4 text-lg">{children}</main>
         </div>
       </body>
     </html>
