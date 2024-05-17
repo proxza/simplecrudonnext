@@ -1,15 +1,17 @@
+"use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface IPosts {
+interface IPost {
   $id: string;
   title: string;
   content: string;
 }
 
 export default function Home() {
-  const [posts, setPosts] = useState<IPosts[]>();
+  const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -23,25 +25,50 @@ export default function Home() {
         setPosts(data);
       } catch (error) {
         console.log("Error: ", error);
+        setError("Failed to load posts. Please try reload the page!");
       } finally {
         setIsLoading(false);
       }
     };
+
+    fetchPosts();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`/api/p/${id}`, { method: "DELETE" });
+      setPosts((prevPosts) => prevPosts?.filter((i) => i.$id !== id));
+    } catch (error) {
+      setError("Failed to delete post. Please try again!");
+    }
+  };
 
   return (
     <div>
-      <div className="p-4 my-2 rounded-md border-b leading-8">
-        <div className="font-bold">Title</div>
-        <div>Content</div>
+      {error && <p className="py-4 text-red-600">{error}</p>}
+      {isLoading ? (
+        <p>Loading posts...</p>
+      ) : posts?.length > 0 ? (
+        <div>
+          {posts?.map((post) => (
+            <div key={post.$id} className="p-4 my-2 rounded-md border-b leading-8">
+              <div className="font-bold">{post.title}</div>
+              <div>{post.content}</div>
 
-        <div className="flex gap-4 mt-4 justify-end">
-          <Link className="bg-slate-200 px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest" href={"/e"}>
-            Edit
-          </Link>
-          <button className="bg-red-600 text-white px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest">Delete</button>
+              <div className="flex gap-4 mt-4 justify-end">
+                <Link className="bg-slate-200 px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest" href={`/e/${post.$id}`}>
+                  Edit
+                </Link>
+                <button onClick={() => handleDelete(post.$id)} className="bg-red-600 text-white px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest">
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
+      ) : (
+        <p>No posts get found.</p>
+      )}
     </div>
   );
 }
