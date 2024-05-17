@@ -1,6 +1,34 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+interface IPosts {
+  $id: string;
+  title: string;
+  content: string;
+}
 
 export default function Home() {
+  const [posts, setPosts] = useState<IPosts[]>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/p/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts!");
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.log("Error: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  }, []);
+
   return (
     <div>
       <div className="p-4 my-2 rounded-md border-b leading-8">
