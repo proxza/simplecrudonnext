@@ -1,11 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 export default function CreatePage() {
   const [formData, setFormData] = useState({ title: "", content: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prevData) => ({
@@ -21,6 +24,29 @@ export default function CreatePage() {
       setError("Please fill all the fields!");
       return;
     }
+
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/p", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create post!");
+      }
+
+      router.push("/");
+    } catch (error) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -34,7 +60,7 @@ export default function CreatePage() {
           {isLoading ? "Adding..." : "ADD"}
         </button>
       </form>
-      {error && <p className="font-red-600 mt-4">{error}</p>}
+      {error && <p className="text-red-600 mt-4">{error}</p>}
     </div>
   );
 }
