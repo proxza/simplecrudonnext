@@ -1,4 +1,20 @@
+import { useEffect, useState } from "react";
+
 export default function EditPage() {
+  const [formData, setFormData] = useState({ title: "", content: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/p/`);
+      } catch (error) {
+        setError("Failed to load post.");
+      }
+    };
+  }, []);
+
   return (
     <div>
       <h2 className="text-2xl font-bold my-8">Edit Post:</h2>
