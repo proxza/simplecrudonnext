@@ -17,7 +17,7 @@ export default function Home() {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("/api/p/");
+        const response = await fetch("/api/posts/");
         if (!response.ok) {
           throw new Error("Failed to fetch posts!");
         }
@@ -36,7 +36,7 @@ export default function Home() {
 
   const handleDelete = async (id: string) => {
     try {
-      await fetch(`/api/p/${id}`, { method: "DELETE" });
+      await fetch(`/api/posts/${id}`, { method: "DELETE" });
       setPosts((prevPosts) => prevPosts?.filter((i) => i.$id !== id));
     } catch (error) {
       setError("Failed to delete post. Please try again!");
@@ -56,7 +56,7 @@ export default function Home() {
               <div>{post.content}</div>
 
               <div className="flex gap-4 mt-4 justify-end">
-                <Link className="bg-slate-200 px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest" href={`/e/${post.$id}`}>
+                <Link className="bg-slate-200 px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest" href={`/edit/${post.$id}`}>
                   Edit
                 </Link>
                 <button onClick={() => handleDelete(post.$id)} className="bg-red-600 text-white px-4 py-2 rounded-md uppercase text-sm font-bold tracking-widest">

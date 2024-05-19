@@ -29,7 +29,7 @@ export default function CreatePage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/p", {
+      const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

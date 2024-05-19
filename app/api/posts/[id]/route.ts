@@ -30,7 +30,7 @@ async function deletePost(id: string) {
 // Update a specific post
 async function updatePost(id: string, data: { title: string; content: string }) {
   try {
-    const response = await database.updateDocument(process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID, "posts", id, data);
+    const response = await database.updateDocument(process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string, "posts", id, data);
     return response;
   } catch (error) {
     console.error("Error updating post - ", error);

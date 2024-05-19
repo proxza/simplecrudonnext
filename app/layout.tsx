@@ -23,7 +23,7 @@ export default function RootLayout({
             <Link className="text-2xl font-bold" href="/">
               Simple CRUD CMS
             </Link>
-            <Link className="bg-slate-100 grid place-items-center py-2 px-4 rounded-full font-bold shadow-md text-black" href="/c">
+            <Link className="bg-slate-100 grid place-items-center py-2 px-4 rounded-full font-bold shadow-md text-black" href="/create">
               Add Post
             </Link>
           </header>
