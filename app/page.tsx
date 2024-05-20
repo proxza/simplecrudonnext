@@ -52,7 +52,9 @@ export default function Home() {
         <div>
           {posts?.map((post) => (
             <div key={post.$id} className="p-4 my-2 rounded-md border-b leading-8">
-              <div className="font-bold">{post.title}</div>
+              <div className="font-bold">
+                <Link href={`/post/${post.$id}`}>{post.title}</Link>
+              </div>
               <div>{post.content}</div>
 
               <div className="flex gap-4 mt-4 justify-end">
